@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<title>Sportify</title>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" />
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	rel="stylesheet" />
+
+</head>
+
+<body>
+
+	<script>
+		function checkPasswordMatch() {
+			var password = $("#txtNewPassword").val();
+			var confirmPassword = $("#txtConfirmPassword").val();
+
+			if (password != confirmPassword) {
+				$("#divCheckPasswordMatch").html("Passwords do not match!");
+				$("#sender").prop('disabled', true);
+			} else {
+				$("#divCheckPasswordMatch").html("Passwords match.");
+				$("#sender").prop('disabled', false);
+			}
+		}
+	</script>
+
+
+	<div th:replace="fragments/header :: header-nav"></div>
+
+	<div class="container">
+
+		<div
+			th:if="${(param.status != null) and (param.status[0] == 'success')}">
+			<div class="alert alert-success alert-dismissible fade show">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>Success!</strong> User data successfully updated.
+			</div>
+		</div>
+
+		<img width="250px"
+			th:src="@{/avatars/{avatar}(avatar = ${user.pictureUrl})}"
+			class="rounded-circle mx-auto d-block" alt="user" />
+
+
+		<div th:switch="${user.firstName}">
+			<h1 class="text-center" th:case="null" th:text="${user.username}">
+				<b></b>
+			</h1>
+			<h1 class="text-center" th:case="*"
+				th:text="${user.firstName + ' ' + user.lastName}">
+				<b></b>
+			</h1>
+
+		</div>
+
+		<h6 class="text-center">
+			<a th:href="@{/app/account/avatar}">Change User Avatar</a>
+		</h6>
+
+
+
+		<br /> <br />
+		<div class="row">
+			<div class="col-sm-6">
+				<h4>Personal Information</h4>
+				<form action="#" th:action="@{/app/account/updateuser/}"
+					th:object="${user}" method="post">
+
+					<div class="form-group">
+						<label>Username: </label> <input class="form-control"
+							th:field="*{username}" type="text" th:value="${user.username}"
+							required="required" />
+					</div>
+
+					<div class="form-group">
+						<label>First Name: </label> <input class="form-control"
+							th:field="*{firstName}" type="text" th:value="${user.firstName}"
+							required="required" />
+					</div>
+
+					<div class="form-group">
+						<label>Last Name: </label> <input class="form-control"
+							th:field="*{lastName}" type="text" th:value="${user.lastName}"
+							required="required" />
+					</div>
+
+					<div class="form-group">
+						<label>Email: </label> <input class="form-control"
+							th:field="*{email}" type="email" th:value="${user.email}"
+							required="required" />
+					</div>
+
+					<div class="form-group">
+						<label>Date of Birth: </label> <input class="form-control"
+							th:field="*{dateOfBirth}" type="date"
+							th:value="${user.dateOfBirth}" required="required" />
+					</div>
+
+					<button type="submit" class="btn btn-primary btn-block">Update
+						My Data</button>
+
+				</form>
+				<br />
+			</div>
+
+			<div class="col-sm-6">
+				<h4>Change Password</h4>
+				<form action="#" th:action="@{/app/account/set-pwd/}"
+					th:object="${pass}" method="post">
+
+					<div class="form-group">
+						<label for="pwd">Change password</label> <input type="password"
+							name="password" th:field="*{password}" class="form-control"
+							id="txtNewPassword" placeholder="New password" />
+					</div>
+
+					<div class="form-group">
+						<input type="password" name="confirm_password"
+							class="form-control" id="txtConfirmPassword"
+							onChange="checkPasswordMatch()" placeholder="Confirm password" />
+						<div id="divCheckPasswordMatch"></div>
+					</div>
+
+					<div class="form-group">
+						<button id="sender" type="submit" name="update_password"
+							class="btn btn-primary">Update Password</button>
+					</div>
+				</form>
+<br />
+			</div>
+		</div>
+		<br /> <br />
+		<h4>Sportify Options</h4>
+
+		<br />
+		<h6>Search Range</h6>
+		<form action="#" th:action="@{/app/account/set-radius/}"
+			th:object="${userRange}" method="post">
+			<label for="customRange">Define search range (Choose between
+				8 and 120 km as your search distance. Because of that application
+				will be able to show you events):</label> <input type="range"
+				class="custom-range" th:field="*{radius}" min="8" max="120" id="customRange"
+				name="points1" />
+				<button type="submit" name="update_radius"
+							class="btn btn-primary">Set Radius</button>
+		</form>
+
+		<br />
+
+		<h6>Interested Sports</h6>
+		<form action="#" th:action="@{/app/account/set-interest/}"
+			th:object="${userInterest}" method="post">
+			<label for="interest">Select all sports you are interested
+				in:</label>
+				
+			<div th:each="sport : ${sportList}">
+					<input th:name="checked" type="checkbox"
+						th:value="${sport.id}" /> <label
+						class="custom-control-label" for="customCheck"><span th:text="${sport.name}"></span></label>
+				</div>
+				
+				<button type="submit" name="update_interest"
+							class="btn btn-primary">Set Interests</button>
+
+		</form>
+
+	</div>
+
+	<div th:replace="fragments/footer :: footer-data"></div>
+
+</body>
+
+</html>

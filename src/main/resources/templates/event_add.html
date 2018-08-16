@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<title>Sportify</title>
+
+<script src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" />
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	rel="stylesheet" />
+
+
+
+</head>
+
+
+<body>
+
+	<div th:replace="fragments/header :: header-nav"></div>
+
+	<div class="container">
+		<h1>
+			<b>Create a New Event</b>
+		</h1>
+
+
+
+		<form th:action="@{/app/event/send-event}" th:object="${event}"
+			method="post">
+			<div class="form-group">
+				<label>Event name: </label> <input class="form-control"
+					th:field="*{name}" type="text" placeholder="Enter event name..."
+					required="required" />
+			</div>
+			
+			<div class="form-group">
+				<label>Select sport: </label>
+				
+				<select th:field="*{sport}" class="custom-select-sm">
+					<option th:each="sl : ${sportList}" th:value="${sl.id}" th:text="${sl.name}">
+						
+					</option>
+  				</select>
+			
+			</div>
+			
+			<div class="form-group">
+				<label>Minimum players: </label> <input class="form-control"
+					th:field="*{minimumPlayers}" type="number" placeholder="Enter player number..."
+					required="required" />
+			</div>
+			
+			<div class="form-group">
+				<label>Maximum players: </label> <input class="form-control"
+					th:field="*{maximumPlayers}" type="number" placeholder="Enter player number..."
+					required="required" />
+			</div>
+
+			<div class="form-group">
+				<label>Event date: </label> <input class="form-control"
+					th:field="*{date}" type="date" required="required" />
+			</div>
+
+			<div class="form-group">
+				<label>Event time: </label> <input class="form-control"
+					th:field="*{time}" type="time" required="required" />
+			</div>
+
+			<div class="form-group">
+				<input id="address" th:field="*{address}" type="text"
+					placeholder="Enter address here" />
+				<button type="button" class="btn btn-primary" id="btn">Get Address</button>
+				<div>
+					<p>
+						Latitude: <input type="text" th:field="*{latitude}" id="latitude"
+							readonly="readonly" />
+					</p>
+					<p>
+						Longitude: <input type="text" th:field="*{longitude}"
+							id="longitude" readonly="readonly" />
+					</p>
+				</div>
+
+			</div>
+
+			<div class="form-group">
+				<label>Description: </label>
+				<textarea class="form-control" required="required"
+					th:field="*{description}" placeholder="Enter description..."></textarea>
+			</div>
+			
+			<button type="submit" class="btn btn-block btn-success">Create Event</button>
+		</form>
+	</div>
+
+	<script>
+		function showResult(result) {
+			document.getElementById('latitude').value = result.geometry.location
+					.lat();
+			document.getElementById('longitude').value = result.geometry.location
+					.lng();
+		}
+
+		function getLatitudeLongitude(callback, address) {
+			// If adress is not supplied, use default value 'Ferrol, Galicia, Spain'
+			address = address || 'Ferrol, Galicia, Spain';
+			// Initialize the Geocoder
+			geocoder = new google.maps.Geocoder();
+			if (geocoder) {
+				geocoder.geocode({
+					'address' : address
+				}, function(results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+						callback(results[0]);
+					}
+				});
+			}
+		}
+
+		var button = document.getElementById('btn');
+
+		button.addEventListener("click", function() {
+			var address = document.getElementById('address').value;
+			getLatitudeLongitude(showResult, address)
+		});
+	</script>
+
+
+
+	<div th:replace="fragments/footer :: footer-data"></div>
+</body>
+</html>

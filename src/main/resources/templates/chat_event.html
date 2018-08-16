@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<title>Sportify</title>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" />
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	rel="stylesheet" />
+
+
+
+</head>
+
+
+<body>
+
+	<div th:replace="fragments/header :: header-nav"></div>
+
+	<div class="container">
+
+
+
+		<b><span
+			class="text-center  badge badge-pill badge-custom-sportname"
+			th:text="${'Sports / ' + event.sport.name + ' / Chat'}"></span></b>
+		<h1 th:inline="text">
+			<b><span th:text="${'Chat for: ' + event.name}"></span> </b>
+		</h1>
+		<a th:href="@{/app/event/{id}(id = ${event.id})}">Back to Event
+			Details </a>
+		<div class="row">
+
+			<div class="col-sm-4">
+				<br /> Write New Message
+
+				<form action="#"
+					th:action="@{/app/event/{event}/chat/send-message(event = ${event.id})}"
+					th:object="${chat}" method="post">
+
+					<div class="form-group">
+						<textarea class="form-control" required="required"
+							placeholder="Type your message here..." th:field="*{message}"></textarea>
+					</div>
+
+					<button type="submit" class="btn btn-dark btn-block">Send
+						Message</button>
+
+				</form>
+			</div>
+
+			<div class="col">
+				<div class="chat-screen">
+					<div id="top"></div>
+
+					<div th:each="m : ${msg}">
+
+						<div class="chat-msg">
+							<span class="chat-user-info"
+								th:text="${'Written at ' + m.dateTime}"></span><br /> <span
+								th:text="${m.user.username + ': ' + m.message}"></span>
+						</div>
+
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+<div th:replace="fragments/footer :: footer-data"></div>
+</body>
+</html>

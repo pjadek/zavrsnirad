@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<title>Sportify</title>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" />
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link href="../static/css/style.css" th:href="@{/css/style.css}" rel="stylesheet"  />
+
+
+
+</head>
+
+
+<body>
+
+ <div th:replace="fragments/header :: header-nav"></div>
+
+ <h6 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]!</h6>
+
+
+<script>
+	window.onload = getLocation();
+	
+	function getLocation() {
+	    if (navigator.geolocation) {
+	        //navigator.geolocation.getCurrentPosition(showPosition)
+	        //window.location.href("http://localhost:8080/app?lat="+ position.coords.latitude + ",lon=" + position.coords.longitude);
+	    }
+	    window.location.href = "http://localhost:8080/app/event/interest/lat=46.3084113/lon=16.3476178/d=1"; //&lon;16.3476178"
+	}
+
+</script>
+<div th:replace="fragments/footer :: footer-data"></div>
+</body>
+</html>

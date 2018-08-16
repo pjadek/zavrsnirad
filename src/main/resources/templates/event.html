@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<title>Sportify</title>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" />
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	rel="stylesheet" />
+
+
+
+</head>
+
+
+<body>
+
+	<div th:replace="fragments/header :: header-nav"></div>
+
+	<div class="container">
+		<h1>
+			<b>Events</b>
+		</h1>
+
+		<h6 class="text-center" th:inline="text">Welcome
+			[[${#httpServletRequest.remoteUser}]]!</h6>
+		<br />
+
+		<div class="row">
+
+			<div class="col-sm-8">
+
+				<div th:each="e : ${events}">
+
+					<div class="event-mask">
+
+						<div class="event-sport-name">
+							<b><span
+								class="text-center  badge badge-pill badge-custom-sportname"
+								th:text="${e.sport.name + ' near you'}"></span></b>
+
+						</div>
+
+						<div class="event-image">
+							<img th:src="@{/sports/{img}(img = ${e.sport.pictureUrl})}"
+								class="img-fluid" alt="sport" />
+						</div>
+
+						<div class="event-detail">
+							<h4 class="text-center">
+								<b><span th:text="${e.name}"></span><small><span
+										class="text-orange"
+										th:text="${' @ ' + e.date + ' - ' + e.time}"></span></small></b>
+							</h4>
+
+							<a role="button" th:href="@{/app/event/{id}(id = ${e.id})}"
+								class="btn btn-light btn-block">View Details ></a>
+						</div>
+					</div>
+
+
+				</div>
+
+			</div>
+
+			<div class="col-sm-4">
+				<div class="filters">
+					<h5>Filter Events</h5>
+
+					<a role="button" th:href="@{/app}" class="btn btn-primary">All Events
+						Around Me</a> <br />
+					<br /> <a role="button" th:href="@{/app/event/interest}" class="btn btn-warning">My
+						Interests Only</a> <br />
+					<br /> <a role="button" th:href="@{/app/event/approved}" class="btn btn-success">Approved
+						Only</a> <br />
+					<br /> <a role="button" th:href="@{/app/event/my}" class="btn btn-info">My Events</a>
+
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+<div th:replace="fragments/footer :: footer-data"></div>
+</body>
+</html>

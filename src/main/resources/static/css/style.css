@@ -1,0 +1,164 @@
+@charset "UTF-8"; 
+
+html, body {
+	margin: 0;
+	color: #333;
+	font-family: Roboto;
+	width: 100%;
+	height: 100%;
+}
+
+
+nav {
+	width: 100%;
+	height: 50px;
+	background: #fafafa;
+	border-bottom: 1px solid #e0e0e0;
+	position: fixed;
+	z-index: 1000;
+}
+
+.chat-screen{
+	width: 100%;
+	margin-top: 20px;
+	box-sizing: border-box;
+	background: #fafafa;
+	padding: 10px;
+	overflow-y: scroll;
+	height: 700px;
+}
+
+.chat-msg {
+	border-radius: 10px;
+	background: #259EA2;
+	color: #fff;
+	box-sizing: border-box;
+	padding: 5px;
+	margin-bottom: 15px;
+}
+
+
+.chat-user-info {
+	margin: none;
+	font-size: 14px;
+}
+
+p.chat-txt {
+	margin: none;
+}
+
+.navigation-main {
+	max-width: 1110px;
+	margin: auto;
+	line-height: 50px;
+}
+
+.navigation-main .logo a {
+	float: left;
+	font-weight: bold;
+	width: 20%;
+	color: #222;
+	text-decoration: none;
+}
+
+.navigation-main .logo a:hover {
+	text-decoration: none;
+	color: #408EDC;
+	transition: 0.3s;
+}
+
+.navigation-main ul {
+	list-style-type: none;
+	font-size: 24px;
+	float: right;
+	width: 80%;
+}
+
+.navigation-main ul li a {
+	float: right;
+	padding-left: 30px;
+	display: block;
+	color: #333;
+}
+
+.navigation-main ul li a:hover {
+	color: #555;
+	transition: 0.3s;
+}
+
+.container-box {
+	max-width: 960px;
+	padding: 10px;
+	padding-top: 70px;
+	margin: auto;
+}
+
+.display-4 {
+	text-align: center;
+	font-size: 36px;
+}
+
+.display-form-title {
+	font-size: 24px;
+	font-weight: 300;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.avatar img {
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	background: #e0e0e0;
+	border-radius: 50%;
+}
+
+.badge-custom-sportname {
+	background: #FF8000;
+	color: #FFF;
+}
+
+.text-orange {
+	color: #ff8000;
+}
+
+.text-blue {
+	color: #408EDC;
+}
+
+.event-mask {
+	width: 100%;
+	box-sizing: border-box;
+	background: #fafafa;
+	border-radius: 10px;
+	margin-bottom: 15px;
+	border: 1px solid #e0e0e0;
+}
+
+.event-sport-name {
+	margin: 5px;
+}
+
+.event-detail {
+	margin: 10px;
+}
+
+.filters {
+	width: 100%;
+	border-radius: 10px;
+	background: #f4f4f4;
+	box-sizing: border-box;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.footer {
+	background: #fafafa;
+	color: #808080;
+	margin-top: 30px;
+	margin-bottom: 20px;
+	box-sizing: border-box;
+	padding: 10px;
+	border-radius: 10px;
+	border: 1px solid #e0e0e0;
+}

@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<title>Sportify</title>
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" />
+
+<!-- jQuery library -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Popper JS -->
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	rel="stylesheet" />
+
+
+
+</head>
+
+
+<body>
+
+	<div th:replace="fragments/header :: header-nav"></div>
+
+	<div class="container">
+
+		<div
+			th:if="${(param.status != null) and (param.status[0] == 'success')}">
+			<div class="alert alert-success alert-dismissible fade show">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>Success!</strong> You have applied for event. Now all you
+				got to do is wait for organiser approval!
+			</div>
+		</div>
+
+		<div
+			th:if="${(param.status != null) and (param.status[0] == 'unauthorised')}">
+			<div class="alert alert-warning alert-dismissible fade show">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>Failed!</strong> You have no rights to complete this action!
+			</div>
+		</div>
+
+		<div
+			th:if="${(param.status != null) and (param.status[0] == 'approved')}">
+			<div class="alert alert-info alert-dismissible fade show">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>Info!</strong> You have approved user!
+			</div>
+		</div>
+
+		<div
+			th:if="${(param.status != null) and (param.status[0] == 'declined')}">
+			<div class="alert alert-danger alert-dismissible fade show">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>Info!</strong> You have declined user!
+			</div>
+		</div>
+
+		<b><span
+			class="text-center  badge badge-pill badge-custom-sportname"
+			th:text="${'Sports / ' + event.sport.name}"></span></b>
+		<h1 th:inline="text">
+			<b><span th:text="${event.name}"></span> </b>
+		</h1>
+
+		<br />
+
+		<div class="row">
+			<div class="col-sm-3">
+				Organiser <br />
+				<br /> <img width="40px"
+					th:src="@{/avatars/{avatar}(avatar = ${event.user.pictureUrl})}"
+					class="rounded-circle float-left" alt="user" />
+				<div th:switch="${event.user.firstName}">
+					<p class="text-center text-blue" th:case="null"
+						th:text="${event.user.username}"></p>
+					<p class="text-center text-blue" th:case="*"
+						th:text="${event.user.firstName + ' ' + event.user.lastName}"></p>
+
+				</div>
+			</div>
+			<div class="col-sm-3">
+				When <br />
+				<br />
+				<p class="text-blue" th:text="${event.date + ' @ ' + event.time}"></p>
+			</div>
+			<div class="col-sm-3">
+				Location <br />
+				<br />
+				<div th:if="${hidden}">
+					<p class="text-secondary">Will be shared if organiser accepts
+						you.</p>
+				</div>
+				<div th:if="${sub_not_approved}">
+					<p class="text-secondary">Will be shared if organiser accepts
+						you.</p>
+				</div>
+				<div th:if="${sub_approved}">
+					<p class="text-blue" th:text="${event.address}"></p>
+				</div>
+				<div th:if="${org}">
+					<p class="text-blue" th:text="${event.address}"></p>
+				</div>
+
+			</div>
+			<div class="col-sm-3">
+				<br />
+				<div th:if="${hidden}">
+					<a th:href="@{{event}/submit-to-play(event = ${event.id})}"
+						class="btn btn-lg btn-primary mx-auto d-block" role="button">Submit
+						to Play</a>
+				</div>
+				<div th:if="${sub_not_approved}">
+					<b><span class="text-center  badge badge-pill badge-warning">Pending
+							for Approval</span></b>
+				</div>
+				<div th:if="${sub_approved}">
+					<a th:href="@{{event}/chat/#top(event = ${event.id})}"
+						class="btn btn-lg btn-success mx-auto d-block" role="button">Open Chat</a>
+				</div>
+				<div th:if="${org}">
+					<a th:href="@{{event}/chat/#top(event = ${event.id})}"
+						class="btn btn-lg btn-success mx-auto d-block" role="button">Open Chat</a>
+				</div>
+			</div>
+		</div>
+
+		<br />
+		<br /> <img height="400px"
+			th:src="@{/sports/{img}(img = ${event.sport.pictureUrl})}"
+			class="img-fluid" alt="sport" /> <br />
+		<br />
+
+		<div class="row">
+
+			<div class="col-sm-5">
+				<h5>
+					<b>Event Description</b>
+				</h5>
+				<p th:text="${event.description}"></p>
+			</div>
+
+			<div class="col">
+				<h5 class="text-center">
+					<b>Minimum Players</b>
+				</h5>
+				<h2 class="text-center text-orange">
+					<b><span th:text="${event.minimumPlayers}"></span></b>
+				</h2>
+			</div>
+
+			<div class="col">
+				<h5 class="text-center">
+					<b>Maximum Players</b>
+				</h5>
+				<h2 class="text-center text-orange">
+					<b><span th:text="${event.maximumPlayers}"></span></b>
+				</h2>
+			</div>
+
+			<div class="col">
+				<h5 class="text-center">
+					<b>Players Attending</b>
+				</h5>
+				<h2 class="text-center text-orange">
+					<b><span th:text="${count}"></span></b>
+				</h2>
+			</div>
+
+		</div>
+		<br />
+		<br />
+		<div th:if="${sub_approved}">
+			<h5>
+				<b>List of Current and Approved Players</b>
+			</h5>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Username</th>
+						<th>First name</th>
+						<th>Last name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="player : ${approved_players}">
+						<td><img width="20px"
+							th:src="@{/avatars/{avatar}(avatar = ${player.pictureUrl})}"
+							class="rounded-circle" alt="user" /></td>
+						<td th:text="${player.username}"></td>
+						<td th:text="${player.firstName}"></td>
+						<td th:text="${player.lastName}"></td>
+					</tr>
+
+				</tbody>
+			</table>
+			<br />
+			<br />
+		</div>
+
+		<div th:if="${org}">
+			<div th:if="${not #lists.isEmpty(approved_players)}">
+				<h5>
+					<b>List of Approved Users</b>
+				</h5>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Username</th>
+							<th>First name</th>
+							<th>Last name</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="player : ${approved_players}">
+							<td><img width="20px"
+								th:src="@{/avatars/{avatar}(avatar = ${player.pictureUrl})}"
+								class="rounded-circle" alt="user" /></td>
+							<td th:text="${player.username}"></td>
+							<td th:text="${player.firstName}"></td>
+							<td th:text="${player.lastName}"></td>
+							<td><a
+								th:href="@{{event}/decline/{id}(event = ${event.id}, id = ${player.id})}"
+								class="btn btn-sm btn-danger" role="button">Decline</a></td>
+						</tr>
+
+					</tbody>
+				</table>
+				<br />
+				<br />
+			</div>
+			<div th:if="${not #lists.isEmpty(pending_players)}">
+				<h5>
+					<b>List of Pending Users</b>
+				</h5>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Username</th>
+							<th>First name</th>
+							<th>Last name</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="player : ${pending_players}">
+							<td><img width="20px"
+								th:src="@{/avatars/{avatar}(avatar = ${player.pictureUrl})}"
+								class="rounded-circle" alt="user" /></td>
+							<td th:text="${player.username}"></td>
+							<td th:text="${player.firstName}"></td>
+							<td th:text="${player.lastName}"></td>
+							<td><a
+								th:href="@{{event}/approve/{id}(event = ${event.id}, id = ${player.id})}"
+								class="btn btn-sm btn-primary" role="button">Approve</a></td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+<div th:replace="fragments/footer :: footer-data"></div>
+</body>
+</html>
